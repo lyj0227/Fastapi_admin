@@ -1,7 +1,7 @@
 # FastAPI-Admin
 
 #### 介绍
-该项目是由FastAPI开发的一款后端项目模板，配置了简单的环境变量，并且有简单的demo请求可以作为参考使用
+该项目是由FastAPI开发的一款后端项目模板，配置了简单的环境变量，并且有简单的demo请求可以作为参考使用,该项目目前正在持续更新
 
 #### 目录结构
 ```
@@ -20,6 +20,9 @@
 │  ├─api_response               #响应函数
 │  ├─password                   #密码加密函数
 ├─venv                          #虚拟环境
+├─config.py                     #环境配置文件
+├─.env.development              #开发环境
+├─.env.production               #生产环境
 ├─main                          #入口文件
 ├─requirements                  #模块包文件
 ├─test_main.http                #测试文件
@@ -31,9 +34,14 @@
 1、git clone 本仓库
 2、pip install -r requirements.txt 安装模块包
 3、配置database文件
-4、通过python main.py --env (dev/pro) 运行项目
 #### 使用说明
 1、该项目基于python3.11开发,请检查当前python运行版本
+```cmd
+#开发环境
+fastapi dev
+#生产环境
+fastapi run
+```
 #### 特性
 ```
 ·采用python3.11版本
