@@ -1,35 +1,53 @@
 import jwt
-import os
-from fastapi import Header, status
+from fastapi import Header, status, HTTPException
 from datetime import datetime, timedelta
-from utils.api_response import APIResponse
+from config import settings
 
-# 使用随机字符串生成加密密钥
-KEY = os.urandom(32)
+
+ALGORITHM = "HS256"
 
 
 # 生成签名
-def creat_token(data: dict, time: float = 3):
+def creat_token(data: dict):
     jwt_data = data.copy()
-    exp = datetime.utcnow() + timedelta(minutes=time)
+    exp = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     jwt_data.update({'exp': exp})
-    return jwt.encode(jwt_data, KEY, algorithm='HS256')
+    return jwt.encode(jwt_data, settings.SECRET_KEY, algorithm=ALGORITHM)
 
 
 # 签名解密
 def verify_token(token: str | None = Header()):
     if token is None:
-        APIResponse(code=status.HTTP_401_UNAUTHORIZED, message="Invalid Token Error").http_error()
+        raise HTTPException(
+            status_code=status.HTTP_401_UNAUTHORIZED,
+            detail="Invalid Token Error"
+        )
     else:
         try:
-            return jwt.decode(token, KEY, 'HS256')
+            return jwt.decode(token, settings.SECRET_KEY, ALGORITHM)
+        # 抛出签名验证错误异常
         except jwt.InvalidSignatureError:
-            APIResponse(code=status.HTTP_401_UNAUTHORIZED, message="Invalid Token Error").http_error()
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid Token Error"
+            )
         except jwt.ExpiredSignatureError:
-            APIResponse(code=status.HTTP_401_UNAUTHORIZED, message="Invalid Token Error").http_error()
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid Token Error"
+            )
         except jwt.DecodeError:
-            APIResponse(code=status.HTTP_401_UNAUTHORIZED, message="Decode Error").http_error()
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Decode Error"
+            )
         except jwt.InvalidAlgorithmError:
-            APIResponse(code=status.HTTP_401_UNAUTHORIZED, message="Invalid Algorithm Error").http_error()
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid Algorithm Error"
+            )
         except jwt.InvalidKeyError:
-            APIResponse(code=status.HTTP_401_UNAUTHORIZED, message="Invalid Key Error").http_error()
+            raise HTTPException(
+                status_code=status.HTTP_401_UNAUTHORIZED,
+                detail="Invalid Key Error"
+            )

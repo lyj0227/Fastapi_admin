@@ -13,7 +13,7 @@ def init_database(app):
     try:
         register_tortoise(
             app,
-            db_url='mysql://root:lyj227@localhost:3306/admin',
+            db_url=settings.DB_URL,
             modules={"models": ["api.v1.admin_user.models"]},
             generate_schemas=settings.GENERATE_SCHEMAS,
             add_exception_handlers=settings.ADD_EXCEPTION_HANDLERS,

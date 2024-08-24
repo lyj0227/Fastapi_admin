@@ -1,8 +1,7 @@
 from .models import User
-from fastapi import status
+from fastapi import status, HTTPException
 from tortoise.queryset import Q
 from utils.password import password_hash
-from utils.api_response import APIResponse
 from tortoise.exceptions import DoesNotExist, IntegrityError
 
 
@@ -12,10 +11,10 @@ async def user_check(username, password):
         user = await User.get(userName=username, passWord=password_hash(password))
         return user
     except DoesNotExist:
-        return APIResponse(code=status.HTTP_403_FORBIDDEN,
-                           message='The user name or password is incorrect').http_error()
-    except Exception as e:
-        print(e, type(e))
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='The user name or password is incorrect'
+        )
 
 
 # 创建新用户
@@ -24,9 +23,10 @@ async def create_user(username, password):
         await User(userName=username, passWord=password_hash(password)).save()
         return True
     except IntegrityError:
-        return APIResponse(code=status.HTTP_401_UNAUTHORIZED, message='User creation failure').http_error()
-    except Exception as e:
-        print(e, type(e))
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='User creation failure'
+        )
 
 
 # 更新密码
@@ -37,7 +37,9 @@ async def edit_password(id: int | str, password: str, new_password: str):
         await user.save()
         return True
     except DoesNotExist:
-        return APIResponse(code=status.HTTP_401_UNAUTHORIZED, message='old password wrong').http_error()
-    except Exception as e:
-        print(e, type(e))
+        raise HTTPException(
+            status_code=status.HTTP_404_NOT_FOUND,
+            detail='old password wrong'
+        )
+
 

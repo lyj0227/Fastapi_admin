@@ -12,7 +12,7 @@ async def admin_user_login(username: str = Form(min_length=6, max_length=12, def
                            password: str = Form(min_length=6, max_length=12, default='qwer1234',
                                                 regex='^[a-zA-Z0-9_]+$')):
     state = await user_check(username, password)
-    token = creat_token({"userid": state.id}, 3)
+    token = creat_token({"userid": state.id})
     message = {"token": token, "detail": 'success'}
     return message
 
