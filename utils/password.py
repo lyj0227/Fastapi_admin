@@ -1,11 +1,13 @@
-# mdi加密模块
-import hashlib
+from passlib.context import CryptContext
+
+pwd_context = CryptContext(schemes=["sha256_crypt"], deprecated="auto")
 
 
-# 密码校验加密函数
-def password_hash(password: str):
-    has = hashlib.sha256()
-    has.update(password.encode('utf-8'))
-    return has.hexdigest()
+# 加密函数
+def password_hash(password: str) -> str:
+    return pwd_context.hash(password)
 
 
+# 密码校验
+def verify_password(plain_password: str, hashed_password: str) -> bool:
+    return pwd_context.verify(plain_password, hashed_password)
