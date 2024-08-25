@@ -21,9 +21,8 @@ async def admin_user_login(username: str = Form(min_length=6, max_length=12, def
 async def admin_user_register(username: str = Form(min_length=6, max_length=12),
                               password: str = Form(min_length=6, max_length=12, default='123456',
                                                    regex='^[a-zA-Z0-9_]+$')):
-    state = await create_user(username, password)
-    if state is True:
-        return {"message": 'success'}
+    await create_user(username, password)
+    return {"message": 'success'}
 
 
 @user.post('/edit-password', summary='修改密码', response_model=UserModel)
@@ -33,7 +32,6 @@ async def admin_user_edit_password(token: str = Depends(verify_token),
                                    new_password: str = Form(min_length=6, max_length=12,
                                                             regex='^[a-zA-Z0-9_]+$')
                                    ):
-    state = await edit_password(token['userid'], password, new_password)
-    if state is True:
-        return {"message": 'success'}
+    await edit_password(token['userid'], password, new_password)
+    return {"message": 'success'}
 

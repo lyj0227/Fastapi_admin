@@ -20,7 +20,6 @@ async def user_check(username, password):
 async def create_user(username, password):
     try:
         await User(userName=username, passWord=password_hash(password)).save()
-        return True
     except IntegrityError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
@@ -34,7 +33,6 @@ async def edit_password(id: int | str, password: str, new_password: str):
     if verify_password(password, user.passWord):
         user.passWord = password_hash(new_password)
         await user.save()
-        return True
     else:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
