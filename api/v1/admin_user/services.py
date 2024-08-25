@@ -1,8 +1,7 @@
 from .models import User
 from fastapi import status, HTTPException
-from tortoise.queryset import Q
 from utils.password import password_hash, verify_password
-from tortoise.exceptions import DoesNotExist, IntegrityError
+from tortoise.exceptions import IntegrityError
 
 
 # 用户名密码校验
@@ -24,7 +23,7 @@ async def create_user(username, password):
         return True
     except IntegrityError:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail='User creation failure'
         )
 
@@ -38,7 +37,7 @@ async def edit_password(id: int | str, password: str, new_password: str):
         return True
     else:
         raise HTTPException(
-            status_code=status.HTTP_404_NOT_FOUND,
+            status_code=status.HTTP_401_UNAUTHORIZED,
             detail='old password wrong'
         )
 
