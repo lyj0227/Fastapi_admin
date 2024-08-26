@@ -12,6 +12,7 @@
 │  │  │  │─route                #路由模块
 │  │  │  │─schemas              #响应模块
 │  │  │  │─services             #业务模块
+│  │  │─ __init__                #初始化路由
 ├─auth                          #权限模块
 │ ├─token                       #token
 ├─sql_app                       #sql配置模块

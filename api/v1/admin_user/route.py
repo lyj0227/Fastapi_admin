@@ -4,7 +4,7 @@ from auth.token import creat_token
 from fastapi import APIRouter, Form, Depends
 from auth.token import verify_token
 
-user = APIRouter(tags=["admin"], prefix="/admin")
+user = APIRouter(tags=["admin-user"], prefix="/admin")
 
 
 @user.post('/login', summary='用户登录', response_model=Token)

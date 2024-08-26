@@ -26,17 +26,7 @@ def verify_token(token: str | None = Header()):
         try:
             return jwt.decode(token, settings.SECRET_KEY, ALGORITHM)
         # 抛出签名验证错误异常
-        except jwt.InvalidSignatureError:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid Token Error"
-            )
-        except jwt.ExpiredSignatureError:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid Token Error"
-            )
-        except jwt.DecodeError:
+        except jwt.PyJWTError:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Decode Error"
@@ -45,9 +35,4 @@ def verify_token(token: str | None = Header()):
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Invalid Algorithm Error"
-            )
-        except jwt.InvalidKeyError:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid Key Error"
             )
