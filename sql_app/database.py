@@ -2,12 +2,6 @@ from tortoise.contrib.fastapi import register_tortoise
 from config import settings
 
 
-class SqlError(Exception):
-    def __init__(self, message):
-        self.message = message
-        super().__init__(self.message)
-
-
 def init_database(app):
     # 创建数据库ORM链接
     try:
@@ -19,4 +13,4 @@ def init_database(app):
             add_exception_handlers=settings.ADD_EXCEPTION_HANDLERS,
         )
     except Exception as e:
-        raise SqlError(str(e))
+        raise Exception(str(e))

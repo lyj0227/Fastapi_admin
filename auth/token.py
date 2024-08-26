@@ -23,16 +23,4 @@ def verify_token(token: str | None = Header()):
             detail="Invalid Token Error"
         )
     else:
-        try:
-            return jwt.decode(token, settings.SECRET_KEY, ALGORITHM)
-        # 抛出签名验证错误异常
-        except jwt.PyJWTError:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Decode Error"
-            )
-        except jwt.InvalidAlgorithmError:
-            raise HTTPException(
-                status_code=status.HTTP_401_UNAUTHORIZED,
-                detail="Invalid Algorithm Error"
-            )
+        return jwt.decode(token, settings.SECRET_KEY, ALGORITHM)
