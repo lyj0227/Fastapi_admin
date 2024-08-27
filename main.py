@@ -45,7 +45,7 @@ def verify_intercept(request, exc):
 def verify_intercept(request, exc):
     raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        detail={"detail": str(exc)},
+        detail=str(exc),
     )
 
 
