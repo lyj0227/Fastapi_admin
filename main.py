@@ -1,4 +1,4 @@
-from fastapi import FastAPI, status
+from fastapi import FastAPI, status, HTTPException
 from api.v1.main import include_router
 # 导入CORS模块
 from starlette.middleware.cors import CORSMiddleware
@@ -8,13 +8,12 @@ from sql_app.database import init_database
 from config import settings
 # 异常拦截
 from fastapi.exceptions import RequestValidationError
-from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from jwt import PyJWTError
 
 
 class HttpResponses(BaseModel):
-    message: str
+    detail: str
 
 
 # 创建app实例
@@ -35,18 +34,18 @@ app = FastAPI(
 # 校验异常拦截
 @app.exception_handler(RequestValidationError)
 def verify_intercept(request, exc):
-    return JSONResponse(
+    raise HTTPException(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        content={"messages": "Validation Error"},
+        detail="Validation Error",
     )
 
 
 # jwt异常拦截
 @app.exception_handler(PyJWTError)
 def verify_intercept(request, exc):
-    return JSONResponse(
+    raise HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
-        content={"messages": str(exc)},
+        detail={"detail": str(exc)},
     )
 
 

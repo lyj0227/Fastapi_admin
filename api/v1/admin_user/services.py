@@ -1,5 +1,5 @@
 from .models import User
-from fastapi import status, HTTPException
+from fastapi import HTTPException
 from utils.password import password_hash, verify_password
 from tortoise.exceptions import IntegrityError
 
@@ -11,7 +11,7 @@ async def user_check(username, password):
         return user
     else:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=400,
             detail='The user name or password is incorrect'
         )
 
@@ -22,7 +22,7 @@ async def create_user(username, password):
         await User(userName=username, passWord=password_hash(password)).save()
     except IntegrityError:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=400,
             detail='User creation failure'
         )
 
@@ -35,7 +35,7 @@ async def edit_password(id: int | str, password: str, new_password: str):
         await user.save()
     else:
         raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
+            status_code=400,
             detail='old password wrong'
         )
 
