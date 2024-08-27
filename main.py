@@ -1,8 +1,8 @@
 from fastapi import FastAPI, status
-from api.v1.main import routers
+from api.v1.main import include_router
 # 导入CORS模块
 from starlette.middleware.cors import CORSMiddleware
-# 导入数据库模块
+# # 导入数据库模块
 from sql_app.database import init_database
 # 导入环境配置
 from config import settings
@@ -11,7 +11,6 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 from jwt import PyJWTError
-from tortoise.exceptions import BaseORMException
 
 
 class HttpResponses(BaseModel):
@@ -33,7 +32,7 @@ app = FastAPI(
 )
 
 
-# 校验异常处理
+# 校验异常拦截
 @app.exception_handler(RequestValidationError)
 def verify_intercept(request, exc):
     return JSONResponse(
@@ -52,12 +51,7 @@ def verify_intercept(request, exc):
 
 
 # 挂载路由
-try:
-    for k in routers:
-        app.include_router(k)
-except Exception as e:
-    raise Exception(e)
-
+include_router(app)
 # CORS配置
 origins = ['*']
 app.add_middleware(
@@ -67,7 +61,5 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
 # 挂载数据库
 init_database(app)

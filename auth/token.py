@@ -1,5 +1,5 @@
 import jwt
-from fastapi import Header, status, HTTPException
+from fastapi import Header
 from datetime import datetime, timedelta
 from config import settings
 
@@ -17,10 +17,5 @@ def creat_token(data: dict):
 
 # 签名解密
 def verify_token(token: str | None = Header()):
-    if token is None:
-        raise HTTPException(
-            status_code=status.HTTP_401_UNAUTHORIZED,
-            detail="Invalid Token Error"
-        )
-    else:
-        return jwt.decode(token, settings.SECRET_KEY, ALGORITHM)
+    return jwt.decode(token, settings.SECRET_KEY, ALGORITHM)
+
