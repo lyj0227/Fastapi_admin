@@ -7,25 +7,24 @@ from auth.token import verify_token
 user = APIRouter(tags=["admin-user"], prefix="/admin")
 
 
-@user.post('/login', summary='用户登录', response_model=Token)
+@user.post('/login', summary='用户登录')
 async def admin_user_login(username: str = Form(min_length=6, max_length=12),
                            password: str = Form(min_length=6, max_length=12,
                                                 regex='^[a-zA-Z0-9_]+$')):
     state = await user_check(username, password)
     token = creat_token({"userid": state.id})
-    message = {"token": token, "message": 'success'}
-    return message
+    return {'token':token}
 
 
-@user.post('/register', summary='用户注册', response_model=UserModel)
+@user.post('/register', summary='用户注册')
 async def admin_user_register(username: str = Form(min_length=6, max_length=12),
                               password: str = Form(min_length=6, max_length=12,
                                                    regex='^[a-zA-Z0-9_]+$')):
     await create_user(username, password)
-    return {"message": 'success'}
+    return None
 
 
-@user.post('/edit-password', summary='修改密码', response_model=UserModel)
+@user.post('/edit-password', summary='修改密码')
 async def admin_user_edit_password(token: str = Depends(verify_token),
                                    password: str = Form(min_length=6, max_length=12,
                                                         regex='^[a-zA-Z0-9_]+$'),
@@ -33,5 +32,5 @@ async def admin_user_edit_password(token: str = Depends(verify_token),
                                                             regex='^[a-zA-Z0-9_]+$')
                                    ):
     await edit_password(token['userid'], password, new_password)
-    return {"message": 'success'}
+    return None
 
