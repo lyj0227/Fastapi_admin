@@ -49,11 +49,11 @@ def verify_intercept(request, exc):
         detail=str(exc),
     )
 
-
+# 响应体拦截中间件
+app.add_middleware(ResponseInterceptor)
 # 日志中间件
 app.add_middleware(LoggerMiddleware)
-# 相应拦截中间件
-app.add_middleware(ResponseInterceptor)
+
 # 挂载路由
 include_router(app)
 # CORS配置
