@@ -12,6 +12,8 @@ services:
       - common-network
     env_file:
       - .env
+    volumes:
+      - .:/app
   fastapi-mysql:
     image: mysql
     volumes:

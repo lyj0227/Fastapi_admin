@@ -11,6 +11,8 @@ from fastapi.exceptions import RequestValidationError
 from pydantic import BaseModel
 from jwt import PyJWTError
 
+from middleware.logger_middleware import logger_middleware
+
 
 class HttpResponses(BaseModel):
     detail: str
@@ -46,6 +48,9 @@ def verify_intercept(request, exc):
         detail=str(exc),
     )
 
+
+# 中间件
+app.middleware('http')(logger_middleware)
 
 # 挂载路由
 include_router(app)
