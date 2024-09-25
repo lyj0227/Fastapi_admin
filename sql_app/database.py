@@ -7,10 +7,11 @@ def init_database(app):
     try:
         register_tortoise(
             app,
-            db_url=settings.DB_URL,
+            db_url=f'mysql://{settings.MYSQL_USERNAME}:{settings.MYSQL_PASSWORD}@{settings.MYSQL_HOST}:'
+                   f'{settings.MYSQL_POST}/{settings.MYSQL_DATABASES}',
             modules={"models": ["api.v1.admin_user.models"]},
-            generate_schemas=settings.GENERATE_SCHEMAS,
-            add_exception_handlers=settings.ADD_EXCEPTION_HANDLERS,
+            generate_schemas=True,
+            add_exception_handlers=True,
         )
     except Exception as e:
         raise Exception(str(e))

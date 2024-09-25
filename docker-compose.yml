@@ -1,0 +1,36 @@
+services:
+  fastapi-app:
+    build:
+      context: ./
+      dockerfile: ./Dockerfile
+    depends_on:
+      - fastapi-mysql
+      - fastapi-redis
+    ports:
+      - 3000:3000
+    networks:
+      - common-network
+    env_file:
+      - .env
+  fastapi-mysql:
+    image: mysql
+    volumes:
+      - /user/mysql/mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_DATABASE: fastapi_admin
+      MYSQL_ROOT_PASSWORD: lyj227
+    ports:
+      - 3306:3306
+    networks:
+      - common-network
+  fastapi-redis:
+    image: redis
+    volumes:
+      - /user/redis/redis-data:/data
+    ports:
+      - 6379:6379
+    networks:
+      - common-network
+networks:
+  common-network:
+    driver: bridge
