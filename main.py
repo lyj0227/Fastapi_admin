@@ -8,16 +8,11 @@ from sql_app.database import init_database
 from config import settings
 # 异常拦截
 from fastapi.exceptions import RequestValidationError
-from pydantic import BaseModel
 from jwt import PyJWTError
-
 from middleware.logger_middleware import LoggerMiddleware
 from middleware.response_intercept import ResponseInterceptor
-
-
-class HttpResponses(BaseModel):
-    detail: str
-
+from interceptors.verify_intercept import verify_intercept
+from interceptors.token_intercept import token_intercept
 
 # 创建app实例
 app = FastAPI(
@@ -26,20 +21,13 @@ app = FastAPI(
     summary=settings.SUMMARY,
     version=settings.VERSION,
     openapi_url=settings.OPENAPI_URL,
-    responses={
-        422: {"description": "Validation Error", "model": HttpResponses}
-    }
+    responses=settings.RESPONSES
 )
 
 
-# 校验异常拦截
-@app.exception_handler(RequestValidationError)
-def verify_intercept(request, exc):
-    raise HTTPException(
-        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-        detail="Validation Error",
-    )
-
+# 异常拦截
+verify_intercept(app)
+token_intercept(app)
 
 # jwt异常拦截
 @app.exception_handler(PyJWTError)

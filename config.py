@@ -1,18 +1,26 @@
 from pydantic_settings import BaseSettings
+from pydantic import BaseModel
 from functools import lru_cache
-
-import sys
 import secrets
+
 
 
 # 创建Settings对象
 class Settings(BaseSettings):
     # fastapi
+    class HttpResponses(BaseModel):
+        code: int
+        message: str
+        data: None
     DEBUG: bool = True
     TITLE: str = "FastAPI Admin"
     SUMMARY: str = 'FastAPI Admin 是一款基于fastapi的后端项目模板'
     VERSION: str = "0.0.1"
     OPENAPI_URL: str = '/openapi.json'
+    RESPONSES: dict[int,dict[str,str|type]] = {
+        422: {"description": "Validation Error", "model": HttpResponses},
+        401: {"description": "Token Error", "model": HttpResponses},
+    }
     # MySQL
     MYSQL_HOST: str
     MYSQL_POST: int

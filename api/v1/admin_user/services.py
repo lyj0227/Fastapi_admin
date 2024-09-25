@@ -5,19 +5,20 @@ from utils.password import password_hash, verify_password
 
 # 用户名密码校验
 async def user_check(username, password):
+    global user
     try:
         user = await User.get(userName=username)
-        if verify_password(password, user.passWord) is False:
-            raise HTTPException(
-                status_code=400,
-                detail='The user name or password is incorrect'
-            )
-        return user
     except Exception:
          raise HTTPException(
             status_code=400,
             detail='用户不存在'
         )
+    if verify_password(password, user.passWord) is False:
+        raise HTTPException(
+            status_code=400,
+            detail='The user name or password is incorrect'
+        )
+    return user
     
 
 
