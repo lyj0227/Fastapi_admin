@@ -4,6 +4,9 @@ from fastapi import Request, Response
 from datetime import datetime, timedelta, timezone
 from starlette.middleware.base import BaseHTTPMiddleware
 
+"""
+日志中间件
+"""
 class LoggerMiddleware(BaseHTTPMiddleware):
     async def dispatch(self,request: Request, call_next) -> Response:
         method = request.method

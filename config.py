@@ -2,16 +2,15 @@ from pydantic_settings import BaseSettings
 from pydantic import BaseModel
 from functools import lru_cache
 import secrets
-
-
+from typing import Any
 
 # 创建Settings对象
 class Settings(BaseSettings):
-    # fastapi
     class HttpResponses(BaseModel):
         code: int
         message: str
-        data: None
+        data: Any
+    # fastapi
     DEBUG: bool = True
     TITLE: str = "FastAPI Admin"
     SUMMARY: str = 'FastAPI Admin 是一款基于fastapi的后端项目模板'
@@ -34,7 +33,9 @@ class Settings(BaseSettings):
     # Token
     SECRET_KEY: str = secrets.token_urlsafe(32)
     ACCESS_TOKEN_EXPIRE_MINUTES: int = 3
-
+    # aliyun
+    ACCESS_KEY_ID: str
+    ACCESSKEY_SECRET: str
     class Config:
         env_file = '.env'
 

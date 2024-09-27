@@ -2,3 +2,4 @@ venv/
 .vscode/
 .git/
 *.log/
+__pycache__/

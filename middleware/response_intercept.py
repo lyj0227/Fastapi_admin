@@ -1,15 +1,19 @@
 import json
-from fastapi import Request
+from pydantic import BaseModel
+from fastapi import Request,APIRouter
 from starlette.middleware.base import StreamingResponse
 from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 
 
+# 响应拦截中间件
 class ResponseInterceptor(BaseHTTPMiddleware):
     async def dispatch(self, request:Request, call_next) -> StreamingResponse:
         response:StreamingResponse = await call_next(request)
+        # 将路由导出
         if request.url.path in ['/docs','/redoc','/openapi.json']:
             return response
+        # 处理响应体格式
         code = response.status_code
         response_body = b""
         global data
@@ -26,7 +30,6 @@ class ResponseInterceptor(BaseHTTPMiddleware):
             cleaned_data = json.loads(response_body.decode("utf-8"))
         except Exception as e:
             print(e)
-        
         if code == 200:
             data = JSONResponse(status_code=code,content={
                 "code":code,
@@ -43,5 +46,5 @@ class ResponseInterceptor(BaseHTTPMiddleware):
         async def new_body_iterator():
             yield response_body
         # 设置为异步生成器
-        response.body_iterator = new_body_iterator()  
+        response.body_iterator = new_body_iterator()
         return data

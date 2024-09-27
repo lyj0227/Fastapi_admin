@@ -1,6 +1,7 @@
 from .models import User
 from fastapi import HTTPException
 from utils.password import password_hash, verify_password
+from sql_app.redisServe import get_redis
 
 
 # 用户名密码校验

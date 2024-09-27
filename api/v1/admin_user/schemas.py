@@ -1,11 +1,12 @@
-from pydantic import BaseModel
+from config import settings
+from pydantic_settings import BaseSettings
 
 
-# 相应类
-class UserModel(BaseModel):
-    message: str
 
 
-class Token(UserModel):
+class Data(BaseSettings):
     token: str
 
+
+class UserVo(settings.HttpResponses):
+    data:Data

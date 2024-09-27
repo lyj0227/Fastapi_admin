@@ -1,20 +1,19 @@
-from .schemas import Token, UserModel
+from .schemas import UserVo
 from .services import user_check, create_user, edit_password
 from auth.token import creat_token
-from fastapi import APIRouter, Form, Depends
+from fastapi import APIRouter, Form, Depends,Security
 from auth.token import verify_token
-
+from fastapi.security import SecurityScopes
 user = APIRouter(tags=["admin-user"], prefix="/admin")
 
 
-@user.post('/login', summary='用户登录')
+@user.post('/login', summary='用户登录', responses={200:{'description':'Successful Response','model':UserVo}}  )
 async def admin_user_login(username: str = Form(min_length=6, max_length=12),
                            password: str = Form(min_length=6, max_length=12,
                                                 regex='^[a-zA-Z0-9_]+$')):
     state = await user_check(username, password)
     token = creat_token({"userid": state.id})
     return {'token':token}
-
 
 @user.post('/register', summary='用户注册')
 async def admin_user_register(username: str = Form(min_length=6, max_length=12),
@@ -34,3 +33,10 @@ async def admin_user_edit_password(token: str = Depends(verify_token),
     await edit_password(token['userid'], password, new_password)
     return None
 
+
+def getuser(securityScopes:SecurityScopes):
+    print(securityScopes.scopes)
+
+@user.get('/demo')
+async def demo(user = Security(getuser,scopes=['admin'])):
+    pass

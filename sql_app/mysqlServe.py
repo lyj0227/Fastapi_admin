@@ -1,8 +1,9 @@
-from tortoise.contrib.fastapi import register_tortoise
 from config import settings
+from fastapi import FastAPI
+from tortoise.contrib.fastapi import register_tortoise
 
 
-def init_database(app):
+def init_mysql(app:FastAPI):
     # 创建数据库ORM链接
     try:
         register_tortoise(

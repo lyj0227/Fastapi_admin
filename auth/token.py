@@ -10,7 +10,7 @@ ALGORITHM = "HS256"
 # 生成签名
 def creat_token(data: dict):
     jwt_data = data.copy()
-    exp = datetime.utcnow() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
+    exp = datetime.now() + timedelta(minutes=settings.ACCESS_TOKEN_EXPIRE_MINUTES)
     jwt_data.update({'exp': exp})
     return jwt.encode(jwt_data, settings.SECRET_KEY, algorithm=ALGORITHM)
 
