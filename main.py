@@ -13,6 +13,7 @@ from fastapi.staticfiles import StaticFiles
 from middleware.logger_middleware import LoggerMiddleware
 from middleware.response_intercept import ResponseInterceptor
 from middleware.linkdb_middleware import LinkDBMiddleware
+
 # 创建app实例
 app = FastAPI(
     debug=settings.DEBUG,
@@ -45,5 +46,3 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-# init_mysql(app)

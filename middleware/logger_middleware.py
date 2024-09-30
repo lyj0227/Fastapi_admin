@@ -1,24 +1,32 @@
 import sys
 from loguru import logger
-from fastapi import Request, Response
+from starlette.requests import Request
+from fastapi import  Response
 from datetime import datetime, timedelta, timezone
 from starlette.middleware.base import BaseHTTPMiddleware
-
+import logging
 """
 日志中间件
 """
 class LoggerMiddleware(BaseHTTPMiddleware):
     async def dispatch(self,request: Request, call_next) -> Response:
         method = request.method
-        url = request.url
+        path = request.scope['path']
+        http_type = request.scope['type']
         response: Response = await call_next(request)
         china_tz = timezone(timedelta(hours=8), 'China')
         current_time_china = datetime.now(china_tz)
         formatted_time = current_time_china.strftime('%Y-%m-%d')
         code = response.status_code
         logger.remove()
-        logger.add(sys.stderr, colorize=True, format="<green>{message}</green>", level="INFO")
-        logger.add(f"{formatted_time}.log", rotation="1 week", enqueue=True)
-        logger.info(f'{url} {method} {code} {current_time_china}')
+        logger.add(sys.stderr, colorize=True, format=f"<green>{method}- {code}</green> - <bold><i>{path} - {http_type}</i></bold> - <blue>{current_time_china}</blue>", level="INFO")
+        logger.add(sys.stderr, colorize=True, format=f"<red>{method} - {code}</red> - <bold><i>{path} - {http_type}</i></bold> - <blue>{current_time_china}</blue>", level="ERROR")
+        # 日志文件
+        if code == 500:
+            logger.error(f'{method} {code} {path} {http_type} {current_time_china}')
+            logger.add(f"{formatted_time}.debug.log", rotation="1 week", enqueue=True)
+        else:
+            logger.add(f"{formatted_time}.log", rotation="1 week", enqueue=True)
+            logger.info(f'{method} {code} {path} {http_type} {current_time_china}')
         return response
 

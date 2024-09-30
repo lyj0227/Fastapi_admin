@@ -1,9 +1,7 @@
 from config import settings
-from fastapi import FastAPI
 from tortoise import Tortoise
 
-
-async def init_mysql(app:FastAPI):
+async def init_mysql() -> None:
     # 创建数据库ORM链接
     try:
         await Tortoise.init(
@@ -12,6 +10,5 @@ async def init_mysql(app:FastAPI):
             modules={"models": ["api.v1.admin_user.models"]},
             timezone="Asia/Shanghai"
         )
-        await Tortoise.generate_schemas()
     except Exception as e:
         raise Exception(str(e))
