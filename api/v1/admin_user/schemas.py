@@ -1,12 +1,25 @@
-from config import settings
-from pydantic_settings import BaseSettings
+from pydantic import BaseModel
+from datetime import datetime
 
+class Permissions(BaseModel):
+    id:int 
+    code:int
+    description:str
 
+class Token(BaseModel):
+    Authorization: str
 
+class UserInfo(BaseModel):
+    username:str
+    is_frozen:bool
+    is_admin:bool
+    avatar:str|None
+    role:list[str]
+    permissions:list[Permissions]
+    registration_time:datetime
 
-class Data(BaseSettings):
-    token: str
+class UserVo(BaseModel):
+    userInfo: UserInfo
+    authorization:str
+    
 
-
-class UserVo(settings.HttpResponses):
-    data:Data

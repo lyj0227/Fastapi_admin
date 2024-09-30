@@ -13,7 +13,9 @@ class Settings(BaseSettings):
     # fastapi
     DEBUG: bool = True
     TITLE: str = "FastAPI Admin"
-    SUMMARY: str = 'FastAPI Admin 是一款基于fastapi的后端项目模板'
+    SUMMARY: str = """
+    FastAPI Admin 是一款基于fastapi的后端项目模板
+    """
     VERSION: str = "0.0.1"
     OPENAPI_URL: str = '/openapi.json'
     RESPONSES: dict[int,dict[str,str|type]] = {

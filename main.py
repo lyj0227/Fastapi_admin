@@ -1,17 +1,18 @@
 from fastapi import FastAPI
 from api.v1.main import include_router
-# 导入CORS模块
+# CORS模块
 from starlette.middleware.cors import CORSMiddleware
-# # 导入数据库模块
-from sql_app.mysqlServe import init_mysql
-# 导入环境配置
+# 环境配置
 from config import settings
-from middleware.logger_middleware import LoggerMiddleware
-from middleware.response_intercept import ResponseInterceptor
+# 异常拦截器
 from interceptors.verify_intercept import verify_intercept
 from interceptors.token_intercept import token_intercept
 # 静态文件
 from fastapi.staticfiles import StaticFiles
+# 中间件
+from middleware.logger_middleware import LoggerMiddleware
+from middleware.response_intercept import ResponseInterceptor
+from middleware.linkdb_middleware import LinkDBMiddleware
 # 创建app实例
 app = FastAPI(
     debug=settings.DEBUG,
@@ -19,7 +20,7 @@ app = FastAPI(
     summary=settings.SUMMARY,
     version=settings.VERSION,
     openapi_url=settings.OPENAPI_URL,
-    responses=settings.RESPONSES
+    responses=settings.RESPONSES,
 )
 
 app.mount("/static", StaticFiles(directory="static"), name="static")
@@ -32,7 +33,7 @@ token_intercept(app)
 app.add_middleware(ResponseInterceptor)
 # 日志中间件
 app.add_middleware(LoggerMiddleware)
-
+app.add_middleware(LinkDBMiddleware)
 # 挂载路由
 include_router(app)
 # CORS配置
@@ -44,5 +45,5 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-# 挂载数据库
-init_mysql(app)
+
+# init_mysql(app)
