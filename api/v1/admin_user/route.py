@@ -1,12 +1,12 @@
-from .schemas import UserVo
-from .services import user_check, create_user, edit_password
-from fastapi import APIRouter, Form, Depends,Security,Header
-from auth.authorization import verify_token
-from tortoise.transactions import atomic
-from .models import User, Role , Permissions
-from utils.password import password_hash
-from utils.scopes import set_scopes
 from auth.authorization import auth
+from .schemas import UserVo,Register,CreateRole
+from utils.password import password_hash
+from utils.scopes import set_scopes,Scopes
+from auth.authorization import verify_token
+from .models import User, Role , Permissions
+from fastapi import APIRouter, Form, Depends,Security
+from .services import user_check, create_user, edit_password,create_role
+
 
 user = APIRouter(tags=["admin-user"], prefix="/admin")
 
@@ -17,12 +17,14 @@ async def admin_user_login(username: str = Form(min_length=6, max_length=12),
     return await user_check(username, password)
 
 
-@user.post('/register', summary='用户注册')
-async def admin_user_register(username: str = Form(min_length=6, max_length=12),
-                              password: str = Form(min_length=6, max_length=12,
-                                                   regex='^[a-zA-Z0-9_]+$')):
-    await create_user(username, password)
-    return None
+@user.post('/register', summary='用户注册',dependencies=[Security(auth,scopes=set_scopes(Scopes(roles=['admin'],permissions=['1'])))])
+async def admin_user_register(register:Register):
+    return await create_user(register)
+
+
+@user.post('/create_role',summary='创建角色', dependencies=[Security(auth,scopes=set_scopes(Scopes(roles=['admin'],permissions=['1'])))])
+async def create_roles(createRole:CreateRole):
+    return await create_role(createRole)
 
 
 @user.post('/edit-password', summary='修改密码')
@@ -37,7 +39,6 @@ async def admin_user_edit_password(token: str = Depends(verify_token),
 
 
 @user.get('/creatadmin')
-@atomic()
 async def creatadmin():
     admin_user = {
         'username':'admins',
@@ -60,6 +61,7 @@ async def creatadmin():
     return '创建成功'
 
 
-@user.get('/demo',dependencies=[Security(auth,scopes=set_scopes({'roles':['user'],'permissions':['1','2','3']}))])
+
+@user.get('/demo',dependencies=[Security(auth,scopes=set_scopes(Scopes(roles=['admin','user'],permissions=['1','2'])))])
 async def demo():
     return 

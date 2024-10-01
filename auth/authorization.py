@@ -1,7 +1,6 @@
 import jwt
 import json
 from config import settings
-from tortoise.transactions import atomic
 from fastapi import Header,HTTPException
 from datetime import datetime, timedelta
 from fastapi.security import SecurityScopes
@@ -34,13 +33,15 @@ def auth(securityScopes:SecurityScopes,Authorization:str = Header()):
     Authorization = verify_token(Authorization)
     # 判断角色身份
     roles = json.loads(Authorization['roles'])
-    if not bool(set(roles) & set(scopes['roles'])):
-        raise HTTPException(status_code=404,detail='NOT FOUND')
+    for k in roles:
+        if k not in scopes['roles']:
+            raise HTTPException(status_code=404,detail='NOT FOUND')
     # 判断角色权限
     permissions = json.loads(Authorization['permissions'])
     for k in permissions:
-        if k['code'] in scopes['permissions']:
-            raise HTTPException(status_code=404,detail='NOT FOUND')
+         if str(k['code']) not in  scopes['permissions']:
+              raise HTTPException(status_code=404,detail='NOT FOUND')
+            
          
     
 

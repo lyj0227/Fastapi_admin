@@ -1,8 +1,9 @@
-from pydantic import BaseModel
+from pydantic import BaseModel,Field
 from datetime import datetime
+from typing import ClassVar
+
 
 class Permissions(BaseModel):
-    id:int 
     code:int
     description:str
 
@@ -22,4 +23,22 @@ class UserVo(BaseModel):
     userInfo: UserInfo
     authorization:str
     
+class RegisterId(BaseModel):
+    id:int
 
+class PermissionsId(BaseModel):
+    id:int
+
+class Register(BaseModel):
+    username:str
+    is_frozen:bool
+    is_admin:bool
+    avatar:str|None
+    password:str
+    role:list[RegisterId]
+    permissions:list[PermissionsId]
+    registration_time:ClassVar
+
+
+class CreateRole(BaseModel):
+    name:str
