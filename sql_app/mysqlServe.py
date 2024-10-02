@@ -1,6 +1,7 @@
 from config import settings
 from tortoise import Tortoise
 
+
 async def init_mysql() -> None:
     # 创建数据库ORM链接
     try:

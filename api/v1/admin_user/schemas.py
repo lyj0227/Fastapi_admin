@@ -1,6 +1,5 @@
 from pydantic import BaseModel,Field
 from datetime import datetime
-from typing import ClassVar
 
 
 class Permissions(BaseModel):
@@ -15,8 +14,8 @@ class UserInfo(BaseModel):
     is_frozen:bool
     is_admin:bool
     avatar:str|None
-    role:list[str]
-    permissions:list[Permissions]
+    role:list[str] = None
+    permissions:list[Permissions] = None
     registration_time:datetime
 
 class UserVo(BaseModel):
@@ -37,8 +36,25 @@ class Register(BaseModel):
     password:str
     role:list[RegisterId]
     permissions:list[PermissionsId]
-    registration_time:ClassVar
 
 
 class CreateRole(BaseModel):
     name:str
+
+
+class UserList(BaseModel):
+    username:str
+    is_frozen:bool
+    is_admin:bool
+    avatar:str|None
+    registration_time:datetime
+
+
+class UpdateUserInfo(Register):
+    username:str = None
+    is_admin:bool = None
+    is_frozen:bool = None
+    password:str = None
+    role:list[RegisterId] = None
+
+

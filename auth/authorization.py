@@ -31,6 +31,8 @@ def auth(securityScopes:SecurityScopes,Authorization:str = Header()):
     if Authorization == None:
         raise HTTPException(status_code=401,detail='Not Log In')
     Authorization = verify_token(Authorization)
+    if Authorization['is_frozen'] is True:
+       raise HTTPException(status_code=404,detail='NOT FOUND')
     # 判断角色身份
     roles = json.loads(Authorization['roles'])
     for k in roles:

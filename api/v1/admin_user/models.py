@@ -15,12 +15,12 @@ class User(Model):
 # 定义角色表
 class Role(Model):
     id = fields.IntField(pk=True,description='角色id')
-    name=fields.CharField(max_length=50,description='角色名')
+    name=fields.CharField(max_length=50,description='角色名',unique=True,db_index=True)
     permissions = fields.ManyToManyField("models.Permissions",db_constraint=False)
 
 
 # 定义权限表
 class Permissions(Model):
     id = fields.IntField(pk=True,description='权限id')
-    code=fields.IntField(description='权限码')
+    code=fields.IntField(description='权限码',unique=True,db_index=True)
     description=fields.CharField(max_length=255,description='权限描述')

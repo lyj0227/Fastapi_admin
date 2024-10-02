@@ -7,8 +7,8 @@ from typing import Any
 # 创建Settings对象
 class Settings(BaseSettings):
     class HttpResponses(BaseModel):
-        code: int
-        message: str
+        code: int 
+        message: str 
         data: Any
     # fastapi
     DEBUG: bool = True
@@ -21,6 +21,7 @@ class Settings(BaseSettings):
     RESPONSES: dict[int,dict[str,str|type]] = {
         422: {"description": "Validation Error", "model": HttpResponses},
         401: {"description": "Token Error", "model": HttpResponses},
+        200: {"description": "Successful Response", "model": HttpResponses}
     }
     # MySQL
     MYSQL_HOST: str

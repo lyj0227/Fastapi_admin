@@ -7,9 +7,9 @@ from starlette.middleware.base import BaseHTTPMiddleware,StreamingResponse
 # 响应拦截中间件
 class ResponseInterceptor(BaseHTTPMiddleware):
     async def dispatch(self, request:Request, call_next) -> StreamingResponse:
-        response:StreamingResponse = await call_next(request)
         if request.url.path in ['/docs','/redoc','/openapi.json']:
             return response
+        response:StreamingResponse = await call_next(request)
         code = response.status_code
         response_body = b""
         global data
