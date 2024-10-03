@@ -5,7 +5,7 @@
 Fastapi-admin是一款开源的后端项目模板,项目基于python3.11，fastapi 0.111.1,uvicorn 0.30.1,oss2 2.18.3, tortoise-orm 0.21.5 ,PyJWT 2.8.0 等技术
 
 Gitee仓库 [gitee](https://gitee.com/liuyuanjie2234/fast-api-admin.git)
-GitHub仓库 [GitHub]([https://github.com/lyj0227/Fastapi_admin.git)
+GitHub仓库 [GitHub](https://github.com/lyj0227/Fastapi_admin.git)
 
 ### 特性
 
