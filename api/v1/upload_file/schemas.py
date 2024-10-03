@@ -1,4 +1,4 @@
 from pydantic_settings import BaseSettings
 
-class UploadFile(BaseSettings):
+class UploadFileVo(BaseSettings):
     url: str

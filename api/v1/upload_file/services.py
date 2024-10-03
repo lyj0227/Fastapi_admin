@@ -17,6 +17,7 @@ async def upload_file(file:UploadFile):
         if result.status is not 200:
             raise HTTPException(status_code=400,detail="文件上传失败")  
         else:
-             return 'https://fastapi-admin1.oss-cn-beijing.aliyuncs.com/'+  f'static/{file_name}'
+             url = 'https://fastapi-admin1.oss-cn-beijing.aliyuncs.com/'+  f'static/{file_name}'
+             return {'url':url}
     except Exception as e:
         raise HTTPException(status_code=400,detail="文件上传失败")
