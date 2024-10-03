@@ -1,53 +1,75 @@
 # FastAPI-Admin
 
-#### 介绍
-该项目是由FastAPI开发的一款后端项目模板，配置了简单的环境变量，并且有简单的demo请求可以作为参考使用,该项目目前正在持续更新
+#### 简介
 
+Fastapi-admin是一款开源的后端项目模板,项目基于python3.11，fastapi 0.111.1,uvicorn 0.30.1,oss2 2.18.3, tortoise-orm 0.21.5 ,PyJWT 2.8.0 等技术
+
+Gitee仓库 [gitee](https://gitee.com/liuyuanjie2234/fast-api-admin.git)
+GitHub仓库 [gitee](https://gitee.com/liuyuanjie2234/fast-api-admin.git)
+
+
+### 特性
+-   python3.11
+-   fastapi 0.111.1
+-   uvicorn 0.30.1
+-   阿里云oss上传:oss2 2.18.3
+-   路由级的权限控制:scopes
+-   集成JWT令牌验证:PyJWT 2.8.0
+-   便捷的分页模式:fastapi-pagination 0.12.29
+-   异步的orm类库:tortoise-orm 0.21.5
+-   增加了异常拦截以及响应体拦截
+-   集成了docker
 #### 目录结构
+
 ```
 ├─api
-│  ├─v1                         #接口版本
-│  │  │─admin_user              #admin-user模块
-│  │  │  │─models               #数据库模型
-│  │  │  │─route                #路由模块
-│  │  │  │─schemas              #响应模块
-│  │  │  │─services             #业务模块
-│  │  │─ __init__                #初始化路由
+   ├─v1                         #接口版本
+      │─admin_user              #admin-user模块
+         │─models               #数据库模型
+         │─route                #路由模块
+         │─schemas              #响应模块
+         │─services             #业务模块
+      │─ main                   #初始化路由
 ├─auth                          #权限模块
-│ ├─token                       #token
+    ├─authorization
+|——interceptors                 #拦截器
+    |——http_intercept           #http异常拦截器
+|——middleware                   #中间件
+    |——linkdb_middleware        #数据库中间件                
+    |——logger_middleware        #日志中间件
+    |——response_intercept       #响应体异常拦截中间件
 ├─sql_app                       #sql配置模块
-│ ├─database                    #数据库配置模块
+    ├─mysqlServe                #mysql
+    ├─redisServe                #redis
+├─static                        #静态目录
+├─tests                         #测试模块
 ├─utils                         #工具函数
-│  ├─api_response               #响应函数
-│  ├─password                   #密码加密函数
+    ├─scopes                    #权限实例化工具
+    ├─password                  #密码加密函数
+    ├─toolkit                   #时间格式化函数
 ├─venv                          #虚拟环境
 ├─config.py                     #环境配置文件
-├─.env.development              #开发环境
-├─.env.production               #生产环境
+├─.env                          #环境文件
 ├─main                          #入口文件
 ├─requirements                  #模块包文件
 ├─test_main.http                #测试文件
 ```
 
-
-
 #### 安装教程
+
 1、git clone 本仓库
-2、pip install -r requirements.txt 安装模块包
-3、配置database文件
-#### 使用说明
-1、该项目基于python3.11开发,请检查当前python运行版本
-```cmd
-#开发环境
-fastapi dev
-#生产环境
-fastapi run
-```
+2、确保本地没有mysql:3306以及redis:6379服务，本地端口3000无占用
+3、配置.env文件
+4、docker compost up --build
+
+
 #### 特性
+
 ```
 ·采用python3.11版本
 ·Tortoise ORM——————Tortoise ORM是一个受Django启发的易于使用的ORM(对象关系映射器)。
 ·FastAPI——————FastAPI 是一个用于构建 API 的现代、快速（高性能）的 web 框架，使用 Python 并基于标准的 Python 类型提示。
 ·pyjwt——————是一个Python库，它允许你编码和解码JSON Web 令牌(JWT)
 ·Uvicorn——————高性能 ASGI 服务器
+
 ```
