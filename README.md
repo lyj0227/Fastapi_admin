@@ -5,20 +5,21 @@
 Fastapi-admin是一款开源的后端项目模板,项目基于python3.11，fastapi 0.111.1,uvicorn 0.30.1,oss2 2.18.3, tortoise-orm 0.21.5 ,PyJWT 2.8.0 等技术
 
 Gitee仓库 [gitee](https://gitee.com/liuyuanjie2234/fast-api-admin.git)
-GitHub仓库 [gitee](https://gitee.com/liuyuanjie2234/fast-api-admin.git)
-
+GitHub仓库 [GitHub]([https://gitee.com/liuyuanjie2234/fast-api-admin.git](https://github.com/lyj0227/Fastapi_admin.git)https://gitee.com/liuyuanjie2234/fast-api-admin.git)
 
 ### 特性
--   python3.11
--   fastapi 0.111.1
--   uvicorn 0.30.1
--   阿里云oss上传:oss2 2.18.3
--   路由级的权限控制:scopes
--   集成JWT令牌验证:PyJWT 2.8.0
--   便捷的分页模式:fastapi-pagination 0.12.29
--   异步的orm类库:tortoise-orm 0.21.5
--   增加了异常拦截以及响应体拦截
--   集成了docker
+
+- python3.11
+- fastapi 0.111.1
+- uvicorn 0.30.1
+- 阿里云oss上传:oss2 2.18.3
+- 路由级的权限控制:scopes
+- 集成JWT令牌验证:PyJWT 2.8.0
+- 便捷的分页模式:fastapi-pagination 0.12.29
+- 异步的orm类库:tortoise-orm 0.21.5
+- 增加了异常拦截以及响应体拦截
+- 集成了docker
+
 #### 目录结构
 
 ```
@@ -35,7 +36,7 @@ GitHub仓库 [gitee](https://gitee.com/liuyuanjie2234/fast-api-admin.git)
 |——interceptors                 #拦截器
     |——http_intercept           #http异常拦截器
 |——middleware                   #中间件
-    |——linkdb_middleware        #数据库中间件                
+    |——linkdb_middleware        #数据库中间件              
     |——logger_middleware        #日志中间件
     |——response_intercept       #响应体异常拦截中间件
 ├─sql_app                       #sql配置模块
@@ -61,7 +62,6 @@ GitHub仓库 [gitee](https://gitee.com/liuyuanjie2234/fast-api-admin.git)
 2、确保本地没有mysql:3306以及redis:6379服务，本地端口3000无占用
 3、配置.env文件
 4、docker compost up --build
-
 
 #### 特性
 
