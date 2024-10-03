@@ -12,7 +12,13 @@ from fastapi.staticfiles import StaticFiles
 from middleware.logger_middleware import LoggerMiddleware
 from middleware.response_intercept import ResponseInterceptor
 from middleware.linkdb_middleware import LinkDBMiddleware
+from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi_pagination import  add_pagination
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.middleware import SlowAPIMiddleware
+from slowapi.errors import RateLimitExceeded
+limiter = Limiter(key_func=get_remote_address, default_limits=["1/10 seconds"])
 # 创建app实例
 app = FastAPI(
     debug=settings.DEBUG,
@@ -22,7 +28,10 @@ app = FastAPI(
     openapi_url=settings.OPENAPI_URL,
     responses=settings.RESPONSES,
 )
-
+# 限制请求速率
+app.state.limiter =  limiter
+app.add_exception_handler(RateLimitExceeded,_rate_limit_exceeded_handler)
+app.add_middleware(SlowAPIMiddleware)
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # 异常拦截
@@ -32,17 +41,16 @@ app.add_middleware(ResponseInterceptor)
 # 日志中间件
 app.add_middleware(LoggerMiddleware)
 app.add_middleware(LinkDBMiddleware)
-
+app.add_middleware(TrustedHostMiddleware,allowed_hosts=settings.HOSTS)
 # 分页中间件
 add_pagination(app)
 # 挂载路由
 include_router(app)
 # CORS配置
-origins = ['*']
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=settings.ORIGINS,
+    allow_credentials=settings.CREDENTIALS,
+    allow_methods=settings.MEDOTHS,
+    allow_headers=settings.HEADERS,
 )

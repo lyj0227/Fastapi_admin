@@ -1,11 +1,11 @@
 from auth.authorization import auth
 from fastapi_pagination import Page
 from config import settings
-from .schemas import UserVo,Register,CreateRole,UserInfo,UserList,UpdateUserInfo,Permissions
+from .schemas import UserVo,Register,CreateRole,UserInfo,UserList,UpdateUserInfo,Permissions,RegisterList,PermissionsList
 from utils.scopes import set_scopes,Scopes
 from fastapi import APIRouter, Form,Security,Header
 from .services import (user_check, create_user, edit_password,create_role,delete_role,user_list,user_info,delete_user,update_user_info,
-                       create_permissions,roles_join_permissions,role_list,permissions_list)
+                       create_permissions,roles_join_permissions,role_list,permissions_list,delete_permissions)
 
 
 user = APIRouter(tags=["admin-user"], prefix="/admin")
@@ -70,11 +70,20 @@ async def role_join_permissions(role_id:int,permissions_id:int):
     return await roles_join_permissions(role_id,permissions_id)
 
 
-@user.get('/role_list',summary='获取角色列表',response_model=Page[UserList],dependencies=[Security(auth,scopes=set_scopes(Scopes(roles=['admin'],permissions=['1'])))])
+@user.get('/role_list',summary='获取角色列表',response_model=Page[RegisterList],dependencies=[Security(auth,scopes=set_scopes(Scopes(roles=['admin'],permissions=['1'])))])
 async def roles_list(name:str = None):
     return await role_list(name)
 
-@user.get('/permissions',summary='获取权限列表',response_model=Page[UserList],dependencies=[Security(auth,scopes=set_scopes(Scopes(roles=['admin'],permissions=['1'])))])
+@user.get('/permissions',summary='获取权限列表',response_model=Page[PermissionsList],dependencies=[Security(auth,scopes=set_scopes(Scopes(roles=['admin'],permissions=['1'])))])
 async def get_permissions_list(description:str = None, code:int = None):
     return await permissions_list(description,code)
 
+@user.delete('/permissions/{id}',summary='删除权限',dependencies=[Security(auth,scopes=set_scopes(Scopes(roles=['admin'],permissions=['1'])))])
+async def del_permissions(id:int):
+    return await delete_permissions(id)
+
+
+@user.get('/demmo')
+def demo():
+    print(a)
+    return None

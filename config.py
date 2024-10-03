@@ -39,6 +39,12 @@ class Settings(BaseSettings):
     # aliyun
     ACCESS_KEY_ID: str
     ACCESSKEY_SECRET: str
+    # Host
+    HOSTS:list[str] = ['*']
+    ORIGINS:list[str] = ['*']
+    MEDOTHS:list[str] = ['*']
+    HEADERS:list[str] = ['*']
+    CREDENTIALS:bool = False
     class Config:
         env_file = '.env'
 

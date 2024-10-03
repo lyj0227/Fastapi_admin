@@ -173,6 +173,14 @@ async def permissions_list(description,code):
     return paginate(permissions)
 
 @atomic()
+async def delete_permissions(id:int):
+    permissions = await Permissions.get(id=id)
+    await permissions.roles.clear()
+    await permissions.delete()
+    return None
+
+
+@atomic()
 async def creat_admin():
     admin_user = {
         'username':'admins',
@@ -187,9 +195,12 @@ async def creat_admin():
         "code":'1',
         "description":"访问全部接口"
     }
-    user = await User.get_or_create(**admin_user)
-    role = await Role.get_or_create(**roles)
-    permission = await Permissions.get_or_create(**permissions)
-    await user.roles.add(role)
-    await role.permissions.add(permission)
+    try:
+        user = await User.get(username='admins')
+    except Exception as e:
+        user = await User.create(**admin_user)
+        role = await Role.create(**roles)
+        permission = await Permissions.create(**permissions)
+        await user.roles.add(role)
+        await role.permissions.add(permission)
     return '创建成功'

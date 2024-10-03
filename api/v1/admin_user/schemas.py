@@ -58,3 +58,10 @@ class UpdateUserInfo(Register):
     role:list[RegisterId] = None
 
 
+
+class RegisterList(RegisterId):
+    id:int
+
+
+class PermissionsList(Permissions):
+    id:int
