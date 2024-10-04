@@ -1,4 +1,4 @@
-from pydantic import BaseModel, Field
+from pydantic import BaseModel
 from datetime import datetime
 
 
@@ -23,7 +23,7 @@ class UserInfo(BaseModel):
 
 class UserVo(BaseModel):
     userInfo: UserInfo
-    authorization: str
+    Authorization: str
 
 
 class RegisterId(BaseModel):

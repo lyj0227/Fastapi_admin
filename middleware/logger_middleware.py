@@ -1,10 +1,9 @@
 import sys
 from loguru import logger
 from starlette.requests import Request
-from fastapi import Response, HTTPException
+from fastapi import Response
 from datetime import datetime, timedelta, timezone
 from starlette.middleware.base import BaseHTTPMiddleware
-from fastapi.responses import JSONResponse
 
 """
 日志中间件

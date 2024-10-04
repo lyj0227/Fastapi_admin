@@ -1,6 +1,5 @@
 from auth.authorization import auth
 from fastapi_pagination import Page
-from config import settings
 from .schemas import (
     UserVo,
     Register,
@@ -13,7 +12,7 @@ from .schemas import (
     PermissionsList,
 )
 from utils.scopes import set_scopes, Scopes
-from fastapi import APIRouter, Form, Security, Header, Request
+from fastapi import APIRouter, Form, Security, Header
 from .services import (
     user_check,
     create_user,
@@ -131,8 +130,8 @@ async def update_users_info(id: int, user_info: UpdateUserInfo):
 @user.post("/edit_password", summary="修改密码")
 async def admin_user_edit_password(
     Authorization: str = Header(),
-    password: str = Form(min_length=6, max_length=12, regex="^[a-zA-Z0-9_]+$"),
-    new_password: str = Form(min_length=6, max_length=12, regex="^[a-zA-Z0-9_]+$"),
+    password: str = Form(min_length=6, max_length=12),
+    new_password: str = Form(min_length=6, max_length=12),
 ):
     return await edit_password(Authorization, password, new_password)
 

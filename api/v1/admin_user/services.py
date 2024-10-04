@@ -1,7 +1,6 @@
 import json
 from auth.authorization import verify_token
 from .models import User, Role, Permissions
-from tortoise.query_utils import Prefetch
 from fastapi import HTTPException
 from sql_app.redisServe import get_redis
 from tortoise.transactions import atomic
@@ -35,7 +34,7 @@ async def user_check(username: str, password: str) -> dict:
     )
     user.role = roles
     user.permissions = permissions
-    data = {"userInfo": user, "authorization": token}
+    data = {"userInfo": user, "Authorization": token}
     return data
 
 

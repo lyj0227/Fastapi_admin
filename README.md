@@ -24,37 +24,38 @@ GitHub仓库 [GitHub](https://github.com/lyj0227/Fastapi_admin.git)
 #### 目录结构
 
 ```
-├─api
-   ├─v1                         #接口版本
-      │─admin_user              #admin-user模块
-         │─models               #数据库模型
-         │─route                #路由模块
-         │─schemas              #响应模块
-         │─services             #业务模块
-      │─ main                   #初始化路由
-├─auth                          #权限模块
-    ├─authorization
-|——interceptors                 #拦截器
-    |——http_intercept           #http异常拦截器
-|——middleware                   #中间件
-    |——linkdb_middleware        #数据库中间件          
-    |——logger_middleware        #日志中间件
-    |——response_intercept       #响应体异常拦截中间件
-├─sql_app                       #sql配置模块
-    ├─mysqlServe                #mysql
-    ├─redisServe                #redis
-├─static                        #静态目录
-├─tests                         #测试模块
-├─utils                         #工具函数
-    ├─scopes                    #权限实例化工具
-    ├─password                  #密码加密函数
-    ├─toolkit                   #时间格式化函数
-├─venv                          #虚拟环境
-├─config.py                     #环境配置文件
-├─.env                          #环境文件
-├─main                          #入口文件
-├─requirements                  #模块包文件
-├─test_main.http                #测试文件
+|——admin
+    ├─api
+       ├─v1                         #接口版本
+          │─admin_user              #admin-user模块
+             │─models               #数据库模型
+             │─route                #路由模块
+             │─schemas              #响应模块
+             │─services             #业务模块
+          │─ main                   #初始化路由
+    ├─auth                          #权限模块
+        ├─authorization
+    |——interceptors                 #拦截器
+        |——http_intercept           #http异常拦截器
+    |——middleware                   #中间件
+        |——linkdb_middleware        #数据库中间件          
+        |——logger_middleware        #日志中间件
+        |——response_intercept       #响应体异常拦截中间件
+    ├─sql_app                       #sql配置模块
+        ├─mysqlServe                #mysql
+        ├─redisServe                #redis
+    ├─static                        #静态目录
+    ├─tests                         #测试模块
+    ├─utils                         #工具函数
+        ├─scopes                    #权限实例化工具
+        ├─password                  #密码加密函数
+        ├─toolkit                   #时间格式化函数
+    ├─venv                          #虚拟环境
+    ├─config.py                     #环境配置文件
+    ├─.env                          #环境文件
+    ├─main                          #入口文件
+    ├─requirements                  #模块包文件
+    ├─test_main.http                #测试文件
 ```
 
 #### 安装教程
