@@ -1,4 +1,4 @@
-# FastAPI-Admin
+#                                                                                              		FastAPI-Admin
 
 #### 简介
 
@@ -18,7 +18,8 @@ GitHub仓库 [GitHub](https://github.com/lyj0227/Fastapi_admin.git)
 - 便捷的分页模式:fastapi-pagination 0.12.29
 - 异步的orm类库:tortoise-orm 0.21.5
 - 增加了异常拦截以及响应体拦截
-- 集成了docker
+- 集成了docker,无需担心环境问题
+- 对整体路由进行了请求速率的限制
 
 #### 目录结构
 
@@ -36,7 +37,7 @@ GitHub仓库 [GitHub](https://github.com/lyj0227/Fastapi_admin.git)
 |——interceptors                 #拦截器
     |——http_intercept           #http异常拦截器
 |——middleware                   #中间件
-    |——linkdb_middleware        #数据库中间件            
+    |——linkdb_middleware        #数据库中间件          
     |——logger_middleware        #日志中间件
     |——response_intercept       #响应体异常拦截中间件
 ├─sql_app                       #sql配置模块
@@ -58,18 +59,15 @@ GitHub仓库 [GitHub](https://github.com/lyj0227/Fastapi_admin.git)
 
 #### 安装教程
 
-1、git clone 本仓库
-2、确保本地没有mysql:3306以及redis:6379服务，本地端口3000无占用
-3、配置.env文件
-4、docker compost up --build
+- 1、git clone 本仓库
+- 2、确保本地没有mysql:3306以及redis:6379服务，本地端口3000无占用
+- 3、配置.env文件
+- 4、docker compost up --build
 
-#### 特性
+#### 功能
 
-```
-·采用python3.11版本
-·Tortoise ORM——————Tortoise ORM是一个受Django启发的易于使用的ORM(对象关系映射器)。
-·FastAPI——————FastAPI 是一个用于构建 API 的现代、快速（高性能）的 web 框架，使用 Python 并基于标准的 Python 类型提示。
-·pyjwt——————是一个Python库，它允许你编码和解码JSON Web 令牌(JWT)
-·Uvicorn——————高性能 ASGI 服务器
-
-```
+- 权限控制：基于路由级别的权限控制
+- 环境：集成了docker 无需担心多环境问题
+- 异常处理：内部进行了异常拦截处理，无需担心无法处理未知的异常问题
+- 统一的响应体结构
+- 日志集成：集成了日志功能， 自动记录异常

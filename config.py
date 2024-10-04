@@ -4,12 +4,14 @@ from functools import lru_cache
 import secrets
 from typing import Any
 
+
 # 创建Settings对象
 class Settings(BaseSettings):
     class HttpResponses(BaseModel):
-        code: int 
-        message: str 
+        code: int
+        message: str
         data: Any
+
     # fastapi
     DEBUG: bool = True
     TITLE: str = "FastAPI Admin"
@@ -17,11 +19,11 @@ class Settings(BaseSettings):
     FastAPI Admin 是一款基于fastapi的后端项目模板
     """
     VERSION: str = "0.0.1"
-    OPENAPI_URL: str = '/openapi.json'
-    RESPONSES: dict[int,dict[str,str|type]] = {
+    OPENAPI_URL: str = "/openapi.json"
+    RESPONSES: dict[int, dict[str, str | type]] = {
         422: {"description": "Validation Error", "model": HttpResponses},
         401: {"description": "Token Error", "model": HttpResponses},
-        200: {"description": "Successful Response", "model": HttpResponses}
+        200: {"description": "Successful Response", "model": HttpResponses},
     }
     # MySQL
     MYSQL_HOST: str
@@ -40,13 +42,14 @@ class Settings(BaseSettings):
     ACCESS_KEY_ID: str
     ACCESSKEY_SECRET: str
     # Host
-    HOSTS:list[str] = ['*']
-    ORIGINS:list[str] = ['*']
-    MEDOTHS:list[str] = ['*']
-    HEADERS:list[str] = ['*']
-    CREDENTIALS:bool = False
+    HOSTS: list[str] = ["*"]
+    ORIGINS: list[str] = ["*"]
+    MEDOTHS: list[str] = ["*"]
+    HEADERS: list[str] = ["*"]
+    CREDENTIALS: bool = False
+
     class Config:
-        env_file = '.env'
+        env_file = ".env"
 
 
 # 使用lru_cache只创建一次Settings对象

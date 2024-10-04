@@ -1,0 +1,31 @@
+[tool.black]
+line-length = 88
+target-version = ["py311"] 
+include = '\.pyi?$'
+exclude = '''
+/(
+    \.git
+    | \.hg
+    | \.mypy_cache
+    | \.tox
+    | \.venv
+    | venv
+    | _build
+    | buck-out
+    | build
+    | dist
+)/
+'''
+
+[tool.pylint]
+disable = ["C0114", "C0115", "C0116"]  
+max-line-length = 88
+output-format = "colorized" 
+good-names = ["i", "j", "k", "ex", "Run", "_", "app"]  
+ignore = "venv"
+
+[tool.commitizen]
+name = "cz_conventional_commits"
+version = "2.0.0"
+tag-format = "v$version"
+changelog = "CHANGELOG.md"
