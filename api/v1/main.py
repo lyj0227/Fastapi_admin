@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from admin_user.route import user
-from upload_file.route import upload
+from .admin_user.route import user
+from .upload_file.route import upload
 
 
 # 路由挂载函数
