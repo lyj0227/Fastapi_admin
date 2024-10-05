@@ -1,5 +1,6 @@
 from auth.authorization import auth
 from fastapi_pagination import Page
+from redis import Redis
 from .schemas import (
     UserVo,
     Register,
@@ -11,8 +12,9 @@ from .schemas import (
     RegisterList,
     PermissionsList,
 )
+from sql_app.redisServe import get_redis
 from utils.scopes import set_scopes, Scopes
-from fastapi import APIRouter, Form, Security, Header
+from fastapi import APIRouter, Form, Security, Header, Depends
 from .services import (
     user_check,
     create_user,
@@ -28,6 +30,7 @@ from .services import (
     role_list,
     permissions_list,
     delete_permissions,
+    redis_test_demo,
 )
 
 
@@ -191,3 +194,8 @@ async def get_permissions_list(description: str = None, code: int = None):
 )
 async def del_permissions(id: int):
     return await delete_permissions(id)
+
+
+@user.get("/test_redis", summary="测试rides连接池")
+async def redis_demo(redis: Redis = Depends(get_redis)):
+    return await redis_test_demo(redis)

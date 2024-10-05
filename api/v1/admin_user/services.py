@@ -2,6 +2,7 @@ import json
 from auth.authorization import verify_token
 from .models import User, Role, Permissions
 from fastapi import HTTPException
+from redis import Redis
 from sql_app.redisServe import get_redis
 from tortoise.transactions import atomic
 from .schemas import Register, CreateRole, UpdateUserInfo, Permissions as Permission
@@ -198,3 +199,8 @@ async def creat_admin():
         await user.roles.add(role)
         await role.permissions.add(permission)
     return "创建成功"
+
+
+async def redis_test_demo(redis: Redis):
+    await redis.set(name="1", value=2)
+    return None

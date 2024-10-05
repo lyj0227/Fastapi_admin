@@ -1,5 +1,6 @@
 from fastapi import FastAPI
 from api.v1.main import include_router
+from sql_app.mysqlServe import init_mysql
 
 # CORS模块
 from starlette.middleware.cors import CORSMiddleware
@@ -16,7 +17,6 @@ from fastapi.staticfiles import StaticFiles
 # 中间件
 from middleware.logger_middleware import LoggerMiddleware
 from middleware.response_intercept import ResponseInterceptor
-from middleware.linkdb_middleware import LinkDBMiddleware
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
 from fastapi_pagination import add_pagination
 from slowapi import Limiter, _rate_limit_exceeded_handler
@@ -24,7 +24,7 @@ from slowapi.util import get_remote_address
 from slowapi.middleware import SlowAPIMiddleware
 from slowapi.errors import RateLimitExceeded
 
-limiter = Limiter(key_func=get_remote_address, default_limits=["1/10 seconds"])
+limiter = Limiter(key_func=get_remote_address, default_limits=["1/1 seconds"])
 # 创建app实例
 app = FastAPI(
     debug=settings.DEBUG,
@@ -38,6 +38,7 @@ app = FastAPI(
 app.state.limiter = limiter
 app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
 app.add_middleware(SlowAPIMiddleware)
+
 app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # 异常拦截
@@ -46,7 +47,6 @@ ApiExceptionInterception(app)
 app.add_middleware(ResponseInterceptor)
 # 日志中间件
 app.add_middleware(LoggerMiddleware)
-app.add_middleware(LinkDBMiddleware)
 app.add_middleware(TrustedHostMiddleware, allowed_hosts=settings.HOSTS)
 # 分页中间件
 add_pagination(app)
@@ -60,3 +60,5 @@ app.add_middleware(
     allow_methods=settings.MEDOTHS,
     allow_headers=settings.HEADERS,
 )
+
+init_mysql(app)

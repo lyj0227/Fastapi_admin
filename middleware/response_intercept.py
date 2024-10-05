@@ -1,8 +1,9 @@
 import json
 from fastapi import Request, Response
 from fastapi.responses import JSONResponse
-from starlette.middleware.base import BaseHTTPMiddleware, StreamingResponse
+from starlette.middleware.base import BaseHTTPMiddleware
 from api.v1.admin_user.services import creat_admin
+from starlette.responses import StreamingResponse
 
 
 # 响应拦截中间件
@@ -10,7 +11,7 @@ class ResponseInterceptor(BaseHTTPMiddleware):
     async def dispatch(self, request: Request, call_next) -> StreamingResponse:
         response: Response = None
         try:
-            response = await call_next(request)
+            response: StreamingResponse = await call_next(request)
         except Exception as e:
             print(e)
             return JSONResponse(
@@ -27,16 +28,17 @@ class ResponseInterceptor(BaseHTTPMiddleware):
         cleaned_data = {}
         async for chunk in response.body_iterator:
             response_body += chunk
-        response.body_iterator = iter([response_body])
-        cleaned_data = json.loads(response_body.decode("utf-8"))
+        if response_body:
+            cleaned_data = json.loads(response_body.decode("utf-8"))
         if code == 200:
             data = JSONResponse(
                 status_code=code,
                 content={"code": code, "message": "success", "data": cleaned_data},
             )
         else:
+            error_message = cleaned_data.get("detail")
             data = JSONResponse(
                 status_code=code,
-                content={"code": code, "message": cleaned_data["detail"], "data": None},
+                content={"code": code, "message": error_message, "data": None},
             )
         return data

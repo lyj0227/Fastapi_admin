@@ -1,4 +1,4 @@
-#                                                                                              		FastAPI-Admin
+# FastAPI-Admin
 
 #### 简介
 
@@ -20,6 +20,8 @@ GitHub仓库 [GitHub](https://github.com/lyj0227/Fastapi_admin.git)
 - 增加了异常拦截以及响应体拦截
 - 集成了docker,无需担心环境问题
 - 对整体路由进行了请求速率的限制
+- 集成了pytest
+- 异步的redis连接池
 
 #### 目录结构
 
@@ -38,7 +40,7 @@ GitHub仓库 [GitHub](https://github.com/lyj0227/Fastapi_admin.git)
     |——interceptors                 #拦截器
         |——http_intercept           #http异常拦截器
     |——middleware                   #中间件
-        |——linkdb_middleware        #数据库中间件          
+        |——linkdb_middleware        #数据库中间件        
         |——logger_middleware        #日志中间件
         |——response_intercept       #响应体异常拦截中间件
     ├─sql_app                       #sql配置模块
@@ -72,3 +74,5 @@ GitHub仓库 [GitHub](https://github.com/lyj0227/Fastapi_admin.git)
 - 异常处理：内部进行了异常拦截处理，无需担心无法处理未知的异常问题
 - 统一的响应体结构
 - 日志集成：集成了日志功能， 自动记录异常
+- 基本的测试demo
+- redis连接池测试demo
