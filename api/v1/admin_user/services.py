@@ -3,7 +3,6 @@ from auth.authorization import verify_token
 from .models import User, Role, Permissions
 from fastapi import HTTPException
 from redis import Redis
-from sql_app.redisServe import get_redis
 from tortoise.transactions import atomic
 from .schemas import Register, CreateRole, UpdateUserInfo, Permissions as Permission
 from utils.toolkit import convert_to_datetime

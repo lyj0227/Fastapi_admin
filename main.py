@@ -1,6 +1,7 @@
 from fastapi import FastAPI
 from api.v1.main import include_router
 from sql_app.mysqlServe import init_mysql
+from api.v1.admin_user.services import creat_admin
 
 # CORS模块
 from starlette.middleware.cors import CORSMiddleware
@@ -62,3 +63,9 @@ app.add_middleware(
 )
 
 init_mysql(app)
+
+
+# 创建超级管理员
+@app.on_event("startup")
+async def startup_event():
+    await creat_admin()
