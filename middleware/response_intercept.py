@@ -13,7 +13,6 @@ class ResponseInterceptor(BaseHTTPMiddleware):
         try:
             response: StreamingResponse = await call_next(request)
         except Exception as e:
-            print(e)
             return JSONResponse(
                 status_code=500,
                 content={"code": 500, "data": None, "message": "Internal Server Error"},

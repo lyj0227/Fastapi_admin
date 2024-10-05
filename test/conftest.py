@@ -13,7 +13,7 @@ app = main_module.app
 @pytest.fixture(scope="module", autouse=True)
 async def init_sql():
     await Tortoise.init(
-        db_url="mysql://root:lyj227@localhost:3306/fastapi_admin",
+        db_url="test_mysql_url",
         modules={"models": ["api.v1.admin_user.models"]},
         timezone="Asia/Shanghai",
     )

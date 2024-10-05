@@ -4,7 +4,6 @@ import secrets
 import string
 from config import settings
 from fastapi import UploadFile, HTTPException
-from config import settings
 
 
 async def upload_file(file: UploadFile):
@@ -23,11 +22,11 @@ async def upload_file(file: UploadFile):
     )
     try:
         result = bucket.put_object(f"static/{file_name}", content)
-        if result.status is not 200:
+        if result.status != 200:
             raise HTTPException(status_code=400, detail="文件上传失败")
         else:
             url = (
-                "https://fastapi-admin1.oss-cn-beijing.aliyuncs.com/"
+                "your_aliyun_url"
                 + f"static/{file_name}"
             )
             return {"url": url}

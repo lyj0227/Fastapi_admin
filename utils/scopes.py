@@ -15,7 +15,7 @@ class Scopes:
 
 
 def set_scopes(scopes: Scopes) -> list[str]:
-    if type(scopes) != Scopes:
+    if type(scopes) is not Scopes:
         raise Exception("类型不为Scopes")
     scopes = scopes.__dict__
     data = json.dumps(scopes)
