@@ -46,7 +46,7 @@ async def admin_user_login(
 
 
 @user.post(
-    "/register",
+    "/user",
     summary="用户注册",
     dependencies=[
         Security(auth, scopes=set_scopes(Scopes(roles=["admin"], permissions=["1"])))
@@ -56,30 +56,9 @@ async def admin_user_register(register: Register):
     return await create_user(register)
 
 
-@user.post(
-    "/create_role",
-    summary="创建角色",
-    dependencies=[
-        Security(auth, scopes=set_scopes(Scopes(roles=["admin"], permissions=["1"])))
-    ],
-)
-async def create_roles(createRole: CreateRole):
-    return await create_role(createRole)
-
-
-@user.delete(
-    "/delete_role/{id}",
-    summary="删除角色",
-    dependencies=[
-        Security(auth, scopes=set_scopes(Scopes(roles=["admin"], permissions=["1"])))
-    ],
-)
-async def delete_roles(id: int):
-    return await delete_role(id)
-
 
 @user.get(
-    "/user_list",
+    "/user",
     summary="查询用户列表",
     response_model=Page[UserList],
     dependencies=[
@@ -97,7 +76,7 @@ async def get_user_list(
 
 
 @user.get(
-    "/user_info/{id}",
+    "/user/{id}",
     summary="查询用户详细信息",
     response_model=UserInfo,
     dependencies=[
@@ -120,7 +99,7 @@ async def delete_users(id: int):
 
 
 @user.put(
-    "/update_user_info/{id}",
+    "/user/{id}",
     summary="修改用户信息",
     dependencies=[
         Security(auth, scopes=set_scopes(Scopes(roles=["admin"], permissions=["1"])))
@@ -130,7 +109,7 @@ async def update_users_info(id: int, user_info: UpdateUserInfo):
     return await update_user_info(id, user_info)
 
 
-@user.post("/edit_password", summary="修改密码")
+@user.post("/password", summary="修改密码")
 async def admin_user_edit_password(
     Authorization: str = Header(),
     password: str = Form(min_length=6, max_length=12),
@@ -138,31 +117,30 @@ async def admin_user_edit_password(
 ):
     return await edit_password(Authorization, password, new_password)
 
-
 @user.post(
-    "/create_permissions",
-    summary="创建权限",
+    "/role",
+    summary="创建角色",
     dependencies=[
         Security(auth, scopes=set_scopes(Scopes(roles=["admin"], permissions=["1"])))
     ],
 )
-async def create_permission(permissions: Permissions):
-    return await create_permissions(permissions)
+async def create_roles(createRole: CreateRole):
+    return await create_role(createRole)
 
 
-@user.post(
-    "/role_{role_id}/permissions_{permissions_id}",
-    summary="角色分配权限",
+@user.delete(
+    "/role/{id}",
+    summary="删除角色",
     dependencies=[
         Security(auth, scopes=set_scopes(Scopes(roles=["admin"], permissions=["1"])))
     ],
 )
-async def role_join_permissions(role_id: int, permissions_id: int):
-    return await roles_join_permissions(role_id, permissions_id)
+async def delete_roles(id: int):
+    return await delete_role(id)
 
 
 @user.get(
-    "/role_list",
+    "/role",
     summary="获取角色列表",
     response_model=Page[RegisterList],
     dependencies=[
@@ -171,6 +149,18 @@ async def role_join_permissions(role_id: int, permissions_id: int):
 )
 async def roles_list(name: str = None):
     return await role_list(name)
+
+
+
+@user.post(
+    "/permissions",
+    summary="创建权限",
+    dependencies=[
+        Security(auth, scopes=set_scopes(Scopes(roles=["admin"], permissions=["1"])))
+    ],
+)
+async def create_permission(permissions: Permissions):
+    return await create_permissions(permissions)
 
 
 @user.get(
@@ -194,6 +184,20 @@ async def get_permissions_list(description: str = None, code: int = None):
 )
 async def del_permissions(id: int):
     return await delete_permissions(id)
+
+
+@user.post(
+    "/role_{role_id}/permissions_{permissions_id}",
+    summary="角色分配权限",
+    dependencies=[
+        Security(auth, scopes=set_scopes(Scopes(roles=["admin"], permissions=["1"])))
+    ],
+)
+async def role_join_permissions(role_id: int, permissions_id: int):
+    return await roles_join_permissions(role_id, permissions_id)
+
+
+
 
 
 @user.get("/test_redis", summary="测试rides连接池")
